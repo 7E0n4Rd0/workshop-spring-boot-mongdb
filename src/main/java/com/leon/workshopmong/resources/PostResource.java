@@ -1,5 +1,6 @@
 package com.leon.workshopmong.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,18 @@ public class PostResource {
 	public ResponseEntity<List<Post>> findByTitle(@RequestParam(value="text", defaultValue = "") String title){
 		title = URL.decodeParam(title);
 		List<Post> list = service.findByTitle(title);
+		return ResponseEntity.ok().body(list);
+	}
+	
+	@GetMapping(value = "/fullsearch")
+	public ResponseEntity<List<Post>> fullSearch(
+			@RequestParam(value = "txt", defaultValue = "") String text, 
+			@RequestParam(value = "min", defaultValue = "") String minDate, 
+			@RequestParam(value = "max", defaultValue = "") String maxDate){
+		text = URL.decodeParam(text);
+		Date min = URL.convertDate(minDate, new Date(0L));
+		Date max = URL.convertDate(maxDate, new Date());
+		List<Post> list = service.fullSearch(text, min, max);
 		return ResponseEntity.ok().body(list);
 	}
 }

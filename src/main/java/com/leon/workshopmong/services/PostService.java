@@ -1,5 +1,6 @@
 package com.leon.workshopmong.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,5 +25,10 @@ public class PostService {
 	public List<Post> findByTitle(String text){
 		return repository.findByTitle(text);
 		//return repository.findByTitleContainingIgnoreCase(text);
+	}
+	
+	public List<Post> fullSearch(String text, Date minDate, Date maxDate){
+		maxDate = new Date(maxDate.getTime());
+		return repository.fullSearch(text, minDate, maxDate);
 	}
 }
